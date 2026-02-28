@@ -1,0 +1,7 @@
+build/
+.cache/
+sdkconfig.old
+*.pyc
+.vscode/
+managed_components/
+idea.txt
