@@ -22,7 +22,7 @@ extern "C" void app_main(void)
     //ADC_CHANNEL_6 coresponds to GPIO34 on ESP32-DevKitC
     adc_oneshot_config_channel(adc_handle, ADC_CHANNEL_6, &chan_config);
 
-    RCSignal rc1;
+    RCSignal rc1(adc_handle);
     rc1.acquire();
     std::cout << rc1.getSamples()[0] << std::endl;
     

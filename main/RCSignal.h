@@ -3,12 +3,17 @@
 
 class RCSignal : public Signal{
     public:
-    adc_oneshot_unit_handle_t adc_handle;
+        RCSignal(adc_oneshot_unit_handle_t adc_handle) 
+        {
+            this->adc_handle = adc_handle;
+        }
     void acquire()
     {
         int raw_value;
         adc_oneshot_read(adc_handle, ADC_CHANNEL_6, &raw_value);
         samples.push_back((float)raw_value);
     }
+    private:
+        adc_oneshot_unit_handle_t adc_handle;
    
 };
