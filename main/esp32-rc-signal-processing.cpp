@@ -4,6 +4,7 @@
 #include "freertos/task.h"
 #include "Signal.h"
 #include "RCSignal.h"
+#include "Filter.h"
 
 extern "C" void app_main(void)
 {
