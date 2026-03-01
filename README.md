@@ -39,7 +39,6 @@ Data flow in system:
 │                                       ESP_LOGI          │
 └─────────────────────────────────────────────────────────┘
 ```
-
 Plots showing implemented filter which is a moving average type and two different N:
 
 ![N=5](docs/signal_window5.png)
@@ -52,6 +51,10 @@ It is noticeable that higher N results in bad behaviour of said filter.
 This is a great demonstration that moving average isn't always a good thing — a window that's too large
 distorts the signal instead of smoothing it. This is the DSP trade-off.
 
+The simple moving average filter applied to ADC measurements acts as a low-pass FIR filter, 
+smoothing high-frequency noise while preserving the underlying trend of the RC signal. 
+The filtered waveform shows reduced variance compared to the raw data, consistent with theoretical 
+expectations for a finite-impulse response smoothing filter.
 
 ## Hardware
 
