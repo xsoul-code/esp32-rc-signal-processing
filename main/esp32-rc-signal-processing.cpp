@@ -36,8 +36,10 @@ extern "C" void Data_Handler(void *pvParameters)
         }
         
         auto filtered = f->process(rc1->getSamples());
-
-        logger->log(filtered);
+        // Raw data
+        logger->log(rc1->getSamples(), "RAW");
+        // Filtered data
+        logger->log(filtered, "FILTERED");
         rc1->clearSamples();
         vTaskDelay(pdMS_TO_TICKS(10));
     }
