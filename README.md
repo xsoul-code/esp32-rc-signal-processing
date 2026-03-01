@@ -40,6 +40,19 @@ Data flow in system:
 └─────────────────────────────────────────────────────────┘
 ```
 
+Plots showing implemented filter which is a moving average type and two different N:
+
+![N=5](docs/signal_window5.png)
+
+We can see a RAW and FILTERED data that correspond to real RC circuit behavior in a changing state.
+
+![N=15](docs/signal_window15.png)
+
+It is noticeable that higher N results in bad behaviour of said filter.
+This is a great demonstration that moving average isn't always a good thing — a window that's too large
+distorts the signal instead of smoothing it. This is the DSP trade-off.
+
+
 ## Hardware
 
 The code for this repository was tested on real hardware which was ESP32-DevKitC and 
