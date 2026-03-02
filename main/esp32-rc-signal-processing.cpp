@@ -73,7 +73,7 @@ extern "C" void app_main(void)
     adc_oneshot_config_channel(adc_handle, ADC_CHANNEL_4, &chan_config);
 
     rc1 = new RCSignal(adc_handle);
-    f = new Filter(15);
+    f = new Filter(5);
     logger = new Logger();
 
     xTaskCreate(PWM_Handler, "PWM_Handler", 2048, NULL, 5, NULL);

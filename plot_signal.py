@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
-raw = [float(x) for x in open('raw_values.csv')][:100]
-filtered = [float(x) for x in open('filtered_values.csv')][:100]
+raw = [float(x) for x in open('raw_values.csv')][:200]
+filtered = [float(x) for x in open('filtered_values.csv')][:200]
 
 plt.figure(figsize=(12, 6))
 plt.plot(raw, label='RAW', alpha=0.7)

@@ -41,7 +41,7 @@ Data flow in system:
 ```
 Plots showing implemented filter which is a moving average type and two different N:
 
-![N=5](docs/signal_window5.png)
+![N=5](docs/RAWvsFILTERED200samples.png)
 
 We can see a RAW and FILTERED data that correspond to real RC circuit behavior in a changing state.
 
