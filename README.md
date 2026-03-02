@@ -62,6 +62,10 @@ The code for this repository was tested on real hardware which was ESP32-DevKitC
 the example analog source for acquisition was chosen to be a RC charging/discharging 
 circuit controlled with PWM signal from ESP32 with 2N2222 BJT transistor.
 
+Electrical circuit diagram:
+
+![Diagram](docs/RC_Circuit.png)
+
 Circuit and its connections used in testing:
 
 ```
