@@ -5,3 +5,6 @@ sdkconfig.old
 .vscode/
 managed_components/
 idea.txt
+README.md.save
+..gitignore.kate-swp
+signal_data.txt

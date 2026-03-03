@@ -6,14 +6,16 @@
 #include "RCSignal.h"
 #include "Filter.h"
 #include "Logger.h"
+#include "SineGenerator.h"
 #include "driver/gpio.h"
 
 #define PWM GPIO_NUM_26
 
-//Null pointers for reference in app_main
+// Null pointers for reference in app_main
 RCSignal* rc1 = nullptr;
 Filter* f = nullptr;
 Logger* logger = nullptr;
+SineGenerator* Sine = nullptr;
 
 extern "C" void PWM_Handler(void *pvParameters)
 {
@@ -75,6 +77,7 @@ extern "C" void app_main(void)
     rc1 = new RCSignal(adc_handle);
     f = new Filter(5);
     logger = new Logger();
+    Sine = new SineGenerator(5, 50, 0.01); //amp, freq, Ts (discrete time of sample)
 
     xTaskCreate(PWM_Handler, "PWM_Handler", 2048, NULL, 5, NULL);
     xTaskCreate(Data_Handler, "Data_Handler", 8192, NULL, 5, NULL);
