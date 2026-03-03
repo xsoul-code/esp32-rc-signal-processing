@@ -103,12 +103,19 @@ Software architecture:
 ## Results
 
 RC Circuit Signal - RAW vs FILTERED:
+
 ![RC Signal](docs/rc_plot.png)
 
+We can see a RAW and FILTERED data that correspond to real RC circuit behavior in a changing state.
+
+
 Generated Sine Wave - RAW vs FILTERED:
+
 ![Sine Signal](docs/sine_plot.png)
 
-We can see a RAW and FILTERED data that correspond to real RC circuit behavior in a changing state.
+For comparison there is implemented a Sine Wave generation and filtration visible above to confirm that filter 
+works properly.
+
 
 RC Circuit Signal - RAW vs FILTERED with higher N=15 value:
 
