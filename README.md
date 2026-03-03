@@ -15,29 +15,35 @@ signal using ESP32, filter it using average filter method and log the outcome.
 
 Data flow in system:
 ```
-┌─────────────────────────────────────────────────────────┐
-│                     Data Flow                           │
-│                                                         │
-│  RC Circuit                                             │
-│  Voltage ──► ADC (GPIO32) ──► RCSignal::acquire()       │
-│                                │                        │
-│                                ▼                        │
-│                       std::vector<float>                │
-│                         (raw samples)                   │
-│                                │                        │
-│                    ┌───────────┴───────────┐            │
-│                    │                       │            │
-│                    ▼                       ▼            │
-│             Logger::log()         Filter::process()     │
-│            [RAW] output          moving average (N=10)  │
-│                                           │             │
-│                                           ▼             │
-│                                    Logger::log()        │
-│                                  [FILTERED] output      │
-│                                           │             │
-│                                           ▼             │
-│                                       ESP_LOGI          │
-└─────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────┐
+│                         Data Flow                               │
+│                                                                 │
+│  ┌─────────────────┐          ┌──────────────────┐              │
+│  │   RC Circuit    │          │  SineGenerator   │              │
+│  │  Voltage        │          │  amp=230, f=50Hz │              │
+│  └────────┬────────┘          └────────┬─────────┘              │
+│           │                            │                        │
+│           ▼                            ▼                        │
+│  RCSignal::acquire()        SineGenerator::acquire()            │
+│           │                            │                        │
+│           ▼                            ▼                        │
+│  std::vector<float>         std::vector<float>                  │
+│    (raw RC samples)           (raw sine samples)                │
+│           │                            │                        │
+│    ┌──────┴──────┐              ┌──────┴──────┐                 │
+│    │             │              │             │                 │
+│    ▼             ▼              ▼             ▼                 │
+│ Logger::log() Filter::      Logger::log() Filter::              │
+│ [RAW]         process()     [SINE]        process()             │
+│                  │                           │                  │
+│                  ▼                           ▼                  │
+│            Logger::log()             Logger::log()              │
+│           [FILTERED_RC]            [FILTERED_SINE]              │
+│                  │                           │                  │
+│                  └───────────┬───────────────┘                  │
+│                              ▼                                  │
+│                          ESP_LOGI                               │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 ## Hardware
