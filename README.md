@@ -39,22 +39,6 @@ Data flow in system:
 │                                       ESP_LOGI          │
 └─────────────────────────────────────────────────────────┘
 ```
-Plots showing implemented filter which is a moving average type and two different N:
-
-![N=5](docs/RAWvsFILTERED200samples.png)
-
-We can see a RAW and FILTERED data that correspond to real RC circuit behavior in a changing state.
-
-![N=15](docs/signal_window15.png)
-
-It is noticeable that higher N results in bad behaviour of said filter.
-This is a great demonstration that moving average isn't always a good thing — a window that's too large
-distorts the signal instead of smoothing it. This is the DSP trade-off.
-
-The simple moving average filter applied to ADC measurements acts as a low-pass FIR filter, 
-smoothing high-frequency noise while preserving the underlying trend of the RC signal. 
-The filtered waveform shows reduced variance compared to the raw data, consistent with theoretical 
-expectations for a finite-impulse response smoothing filter.
 
 ## Hardware
 
@@ -116,15 +100,57 @@ Software architecture:
                               [RAW] & [FILTERED]
 ```
 
+## Results
+
+RC Circuit Signal - RAW vs FILTERED:
+![RC Signal](docs/rc_signal.png)
+
+Generated Sine Wave - RAW vs FILTERED:
+![Sine Signal](docs/sine_signal.png)
+
+We can see a RAW and FILTERED data that correspond to real RC circuit behavior in a changing state.
+
+![N=15](docs/signal_window15.png)
+
+It is noticeable that higher N results in bad behaviour of said filter.
+This is a great demonstration that moving average isn't always a good thing — a window that's too large
+distorts the signal instead of smoothing it. This is the DSP trade-off.
+
+The simple moving average filter applied to ADC measurements acts as a low-pass FIR filter,
+smoothing high-frequency noise while preserving the underlying trend of the RC signal.
+The filtered waveform shows reduced variance compared to the raw data, consistent with theoretical
+expectations for a finite-impulse response smoothing filter.
+
 ## How to build
 
 Building a repository needs ESP-IDF environment and is available for free on ESP-IDF website.
-The commands used in order to compile and flash the repository on ESP hardware. 
+The commands used in order to compile and flash the repository on ESP hardware.
+
+The normal ESP32 Flashing Method (required . ./export.sh script for idf.py enviroment see more info in ESP-IDF documentation):
 
 ```bash
 idf.py build
 idf.py flash monitor
 ```
+
+Flashing and Generating a PNG Graphs using Python script
+
+```bash
+idf.py build
+idf.py flash monitor 2>&1 | grep -a "RAW\|FILTERED\|SINE" | tee signal_data.txt
+```
+
+Afterwards we need to create csv files from .txt file and run plot_signal.py script:
+
+```bash
+grep "\[RAW\]" signal_data.txt | awk '{print $(NF-1)}' > raw_values.csv
+grep "\[FILTERED_RC\]" signal_data.txt | awk '{print $(NF-1)}' > filtered_values.csv
+grep "\[SINE\]" signal_data.txt | awk '{print $(NF-1)}' > rawsine_values.csv
+grep "\[FILTERED_SINE\]" signal_data.txt | awk '{print $(NF-1)}' > filteredsine_values.csv
+
+python3 plot_signal.py
+```
+The generated PNG files including plots are availabe in docs/ directory.
 
 ## Requirements
 - ESP-IDF v5.x

@@ -1,4 +1,5 @@
 #pragma once
+#include "Signal.h"
 #include "esp_adc/adc_oneshot.h"
 
 class RCSignal : public Signal{

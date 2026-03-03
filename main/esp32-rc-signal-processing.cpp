@@ -14,6 +14,7 @@
 // Null pointers for reference in app_main
 RCSignal* rc1 = nullptr;
 Filter* f = nullptr;
+Filter* fsin = nullptr;
 Logger* logger = nullptr;
 SineGenerator* Sine = nullptr;
 
@@ -34,15 +35,22 @@ extern "C" void Data_Handler(void *pvParameters)
     {
         for(int i = 0; i < 20; i++) {
             rc1->acquire();
+            Sine->acquire();
             vTaskDelay(pdMS_TO_TICKS(10));
         }
         
-        auto filtered = f->process(rc1->getSamples());
-        // Raw data
+        auto filteredRC = f->process(rc1->getSamples());
+        auto filteredSine = fsin->process(Sine->getSamples());
+        // Raw RC data
         logger->log(rc1->getSamples(), "RAW");
         // Filtered data
-        logger->log(filtered, "FILTERED");
+        logger->log(filteredRC, "FILTERED_RC");
+        //Raw Sine wave data
+        logger->log(Sine->getSamples(), "SINE");
+        //Filtered Sine wave data
+        logger->log(filteredSine, "FILTERED_SINE");
         rc1->clearSamples();
+        Sine->clearSamples();
         vTaskDelay(pdMS_TO_TICKS(10));
     }
 }
@@ -76,8 +84,9 @@ extern "C" void app_main(void)
 
     rc1 = new RCSignal(adc_handle);
     f = new Filter(5);
+    fsin = new Filter(2);
     logger = new Logger();
-    Sine = new SineGenerator(5, 50, 0.01); //amp, freq, Ts (discrete time of sample)
+    Sine = new SineGenerator(230, 50, 0.001); //amp, freq, Ts for 50 Hz will be 0.001 (discrete time of sample)
 
     xTaskCreate(PWM_Handler, "PWM_Handler", 2048, NULL, 5, NULL);
     xTaskCreate(Data_Handler, "Data_Handler", 8192, NULL, 5, NULL);

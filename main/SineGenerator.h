@@ -17,9 +17,13 @@ class SineGenerator : public Signal
             samples.push_back((float)raw_value);
             n++;
         }
+        void clearSamples() 
+        {
+            samples.clear();
+        }
     private:
         double amp = 230*sqrt(2); // Amplitude of sine wave
         double freq = 50;         // Frequency [Hz]
-        int n = 0;                    // Number of sample
+        int n = 0;                // Number of sample
         float Ts = 0.01;          // The period of sample
 };
